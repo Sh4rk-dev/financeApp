@@ -9,7 +9,7 @@ interface IValuesProps {
 export function Values({ values }: IValuesProps) {
   return (
     <LinearGradient style={styles.container} colors={["#2b93b4", "#56aaa6"]}>
-      <View className="w-full h-20 px-5 justify-between items-center rounded-xl flex-row">
+      <View className="w-full h-[70px] px-5 justify-between items-center rounded-xl flex-row">
         <Text className=" text-5xl justify-between gap-20 text-white">R$</Text>
         <Text className="text-5xl justify-between gap-20 text-white">120,00</Text>
       </View>
