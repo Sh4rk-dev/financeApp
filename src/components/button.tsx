@@ -1,13 +1,11 @@
-import { ComponentProps, ReactNode, createContext, useContext } from "react";
+import { ReactNode } from "react";
 import {
   Text,
-  TextInputProps,
   TouchableOpacity,
-  View,
-  ViewProps,
+  TouchableOpacityProps,
 } from "react-native";
 
-interface IButtonProps extends TextInputProps {
+interface IButtonProps extends TouchableOpacityProps {
   disabled?: boolean;
   className?: string;
   children: ReactNode;
@@ -18,12 +16,13 @@ interface IButtonItemProps {
   className?: string;
 }
 
-function Button({ disabled, className, children }: IButtonProps) {
+function Button({ disabled, className, children, ...rest }: IButtonProps) {
   return (
     <TouchableOpacity
       className={`px-12 items-center py-3 rounded-lg ${className}`}
       disabled={disabled}
       activeOpacity={0.7}
+      {...rest}
     >
       {children}
     </TouchableOpacity>
@@ -37,3 +36,4 @@ function ButtonItem({ text, className }: IButtonItemProps) {
 Button.item = ButtonItem;
 
 export { Button };
+
