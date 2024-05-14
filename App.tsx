@@ -7,7 +7,7 @@ import {
   ScrollView,
   Text,
   View,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 
 import { Form } from "@/components/form";
@@ -17,7 +17,7 @@ import { Values } from "@/components/values";
 import { Header } from "./src/components/header";
 import {
   TransactionType,
-  useTransactionStore
+  useTransactionStore,
 } from "@/store/transactions-store";
 
 export default function App() {
@@ -29,23 +29,19 @@ export default function App() {
     );
 
     return Number(
-      currentTypeTransaction
-        .reduce((acc, item) => acc + item.value, 0)
-        .toFixed(2)
+      currentTypeTransaction.reduce((acc, item) => (acc += +item.value), 0)
     );
   };
 
   const getTotalTransaction = () => {
     return Number(
-      transactions
-        .reduce((acc, item) => {
-          if (item.type === "EXIT") {
-            return acc - item.value;
-          }
+      transactions.reduce((acc, item) => {
+        if (item.type === "EXIT") {
+          return (acc -= +item.value);
+        }
 
-          return acc + item.value;
-        }, 0)
-        .toFixed(2)
+        return (acc += +item.value);
+      }, 0)
     );
   };
 
@@ -58,22 +54,6 @@ export default function App() {
         <StatusBar style="auto" />
 
         <Header />
-
-        <FlatList
-          data={transactions}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => {
-            return (
-              <View>
-                <Text>{item.value}</Text>
-
-                <TouchableOpacity onPress={() => removeTransaction(item.id)}>
-                  <Text>Remover Item</Text>
-                </TouchableOpacity>
-              </View>
-            );
-          }}
-        />
 
         <View className="gap-4 mb-4 ">
           <Label
@@ -88,7 +68,7 @@ export default function App() {
             label={{ text: "Saída" }}
             rightIcon={{ name: "arrow-down-circle-outline" }}
           />
-          <Values values={getTransactionValues("EXIT")} />
+          <Values type="EXIT" values={getTransactionValues("EXIT")} />
         </View>
 
         <View className="gap-4 mb-4">
@@ -106,6 +86,23 @@ export default function App() {
         <Separator />
 
         <Form />
+
+        <FlatList
+          data={transactions}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => {
+            return (
+              <View>
+                <Text>{item.value}</Text>
+                <Text>{item.description}</Text>
+
+                <TouchableOpacity onPress={() => removeTransaction(item.id)}>
+                  <Text>Remover Item</Text>
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+        />
       </View>
     </ScrollView>
   );
