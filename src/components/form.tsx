@@ -14,9 +14,8 @@ import { Controller, useForm } from "react-hook-form";
 type TransactionsItemWithoutType = Omit<TransactionsItem, "type">;
 
 export function Form() {
-  const [selectTransactionType, setSelectTransactionType] = useState<
-    TransactionType
-  >("ENTRANCE");
+  const [selectTransactionType, setSelectTransactionType] =
+    useState<TransactionType>("ENTRANCE");
 
   const { control, handleSubmit } = useForm<TransactionsItemWithoutType>({
     defaultValues: {
