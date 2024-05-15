@@ -49,19 +49,39 @@ export default function App() {
   };
 
   function handleRemoveTransaction(item: string) {
-    Alert.alert("Remover transação", "Tem certeza que deseja remover esta transação?", [
-      {
-        text: "Cancelar",
-      },
-      {
-        text: "Confirmar",
-        onPress: () => {
-          removeTransaction(item)
-        }
-      }
-      
-    ])
-    
+    Alert.alert(
+      "Remover transação",
+      "Tem certeza que deseja remover esta transação?",
+      [
+        {
+          text: "Cancelar",
+        },
+        {
+          text: "Excluir",
+          onPress: () => {
+            removeTransaction(item);
+          },
+        },
+      ]
+    );
+  }
+
+  function handleRemoveAllTransaction() {
+    Alert.alert(
+      "Remover todas as transações",
+      "Tem certeza que deseja remover todas as transações?",
+      [
+        {
+          text: "Cancelar",
+        },
+        {
+          text: "Remover",
+          onPress: () => {
+            clear();
+          },
+        },
+      ]
+    );
   }
 
   return (
@@ -110,12 +130,12 @@ export default function App() {
             <View>
               <View className="flex-row justify-between mt-14 mb-5 items-center">
                 <Text className="text-3xl font-light"> Histórico</Text>
-                <TouchableOpacity onPress={clear}>
+                <TouchableOpacity onPress={handleRemoveAllTransaction}>
                   <Ionicons name="trash-outline" size={22} />
                 </TouchableOpacity>
               </View>
 
-              <View>
+              <View className="mb-20">
                 <View className="flex-row justify-between mb-2 px-2">
                   <Text className="text-base font-bold">Descrição</Text>
                   <Text className="text-base font-bold">Valor</Text>

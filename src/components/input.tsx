@@ -5,7 +5,7 @@ interface IInputProps extends TextInputProps {
   type: KeyboardTypeOptions;
 }
 
-export function Input({ placeholder, type, value, ...rest }: IInputProps) {
+export function Input({ placeholder, type, ...rest }: IInputProps) {
   return (
     <TextInput
       keyboardType={type}

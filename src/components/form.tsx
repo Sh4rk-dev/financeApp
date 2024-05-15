@@ -17,12 +17,13 @@ export function Form() {
   const [selectTransactionType, setSelectTransactionType] =
     useState<TransactionType>("ENTRANCE");
 
-  const { control, handleSubmit } = useForm<TransactionsItemWithoutType>({
-    defaultValues: {
-      value: 0,
-      description: "",
-    },
-  });
+  const { control, handleSubmit, reset } = useForm<TransactionsItemWithoutType>(
+    {
+      defaultValues: {
+        description: "",
+      },
+    }
+  );
 
   const { newTransaction } = useTransactionStore();
 
@@ -30,6 +31,7 @@ export function Form() {
     const newData = { ...data, type: selectTransactionType };
 
     newTransaction(newData);
+    reset();
   };
 
   return (
@@ -42,13 +44,12 @@ export function Form() {
           render={({ field: { onChange, value } }) => (
             <Input
               type="number-pad"
-              value={value.toString()}
+              value={value?.toString()}
               placeholder="Digite um valor..."
-              onChangeText={(value) => onChange(value)}
+              onChangeText={onChange}
             />
           )}
           name="value"
-          defaultValue={0}
         />
       </View>
 
@@ -61,12 +62,12 @@ export function Form() {
           render={({ field: { onChange, value } }) => (
             <Input
               type="default"
+              value={value}
               placeholder="Digite uma descrição..."
-              onChangeText={(value) => onChange(value)}
+              onChangeText={onChange}
             />
           )}
           name="description"
-          defaultValue=""
         />
       </View>
 
