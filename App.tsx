@@ -1,24 +1,27 @@
 import "@/styles/global.css";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { StatusBar } from "expo-status-bar";
 
 import {
+  Alert,
   FlatList,
   ScrollView,
   Text,
-  View,
   TouchableOpacity,
+  View,
 } from "react-native";
 
 import { Form } from "@/components/form";
+import { HistoryItem } from "@/components/historyItem";
 import { Label } from "@/components/label";
 import { Separator } from "@/components/separator";
 import { Values } from "@/components/values";
-import { Header } from "./src/components/header";
 import {
   TransactionType,
   useTransactionStore,
 } from "@/store/transactions-store";
+import { Header } from "./src/components/header";
 
 export default function App() {
   const { transactions, removeTransaction, clear } = useTransactionStore();
@@ -45,8 +48,21 @@ export default function App() {
     );
   };
 
-  console.log(getTransactionValues("ENTRANCE"), "ENTRADA");
-  console.log(getTransactionValues("EXIT"), "sAIDA");
+  function handleRemoveTransaction(item: string) {
+    Alert.alert("Remover transação", "Tem certeza que deseja remover esta transação?", [
+      {
+        text: "Cancelar",
+      },
+      {
+        text: "Confirmar",
+        onPress: () => {
+          removeTransaction(item)
+        }
+      }
+      
+    ])
+    
+  }
 
   return (
     <ScrollView nestedScrollEnabled>
@@ -79,30 +95,55 @@ export default function App() {
           <Values values={getTotalTransaction()} />
         </View>
 
-        <TouchableOpacity onPress={clear}>
-          <Text>Limpar tudo</Text>
-        </TouchableOpacity>
-
         <Separator />
 
         <Form />
 
-        <FlatList
-          data={transactions}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => {
-            return (
-              <View>
-                <Text>{item.value}</Text>
-                <Text>{item.description}</Text>
-
-                <TouchableOpacity onPress={() => removeTransaction(item.id)}>
-                  <Text>Remover Item</Text>
+        <View>
+          {transactions.length === 0 ? (
+            <View className="my-10 justify-center items-center">
+              <Text className="text-xl text-black/50">
+                Você não adicionou nenhum item!
+              </Text>
+            </View>
+          ) : (
+            <View>
+              <View className="flex-row justify-between mt-14 mb-5 items-center">
+                <Text className="text-3xl font-light"> Histórico</Text>
+                <TouchableOpacity onPress={clear}>
+                  <Ionicons name="trash-outline" size={22} />
                 </TouchableOpacity>
               </View>
-            );
-          }}
-        />
+
+              <View>
+                <View className="flex-row justify-between mb-2 px-2">
+                  <Text className="text-base font-bold">Descrição</Text>
+                  <Text className="text-base font-bold">Valor</Text>
+                  <Text className="text-base font-bold">Tipo</Text>
+                </View>
+
+                <Separator />
+
+                <FlatList
+                  data={transactions}
+                  keyExtractor={(item) => item.id}
+                  renderItem={({ item }) => {
+                    return (
+                      <View>
+                        <TouchableOpacity
+                          onLongPress={() => handleRemoveTransaction(item.id)}
+                        >
+                          <HistoryItem data={item} />
+                        </TouchableOpacity>
+                        <Separator />
+                      </View>
+                    );
+                  }}
+                />
+              </View>
+            </View>
+          )}
+        </View>
       </View>
     </ScrollView>
   );

@@ -77,14 +77,24 @@ export function Form() {
           }
           onPress={() => setSelectTransactionType("ENTRANCE")}
         >
-          <Button.item text="Entrada" className="text-white" />
+          <Button.item
+            text="Entrada"
+            className={
+              selectTransactionType === "EXIT" ? "text-black" : "text-white"
+            }
+          />
         </Button>
 
         <Button
           className={selectTransactionType === "EXIT" ? "bg-primary" : "border"}
           onPress={() => setSelectTransactionType("EXIT")}
         >
-          <Button.item text="Saída" />
+          <Button.item
+            text="Saída"
+            className={
+              selectTransactionType === "EXIT" ? "text-white" : "text-black"
+            }
+          />
         </Button>
       </View>
 
